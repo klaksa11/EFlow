@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center">Административная панель</h1>
+
+<form method="GET" action="{{ url_for('admin') }}" class="mb-4">
+    <div class="row g-3">
+        <div class="col-md-3">
+            <input type="text" name="name" class="form-control" placeholder="Поиск по имени" value="{{ request.args.get('name', '') }}">
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="email" class="form-control" placeholder="Поиск по email" value="{{ request.args.get('email', '') }}">
+        </div>
+        <div class="col-md-2">
+            <select name="gender" class="form-select">
+                <option value="">Пол</option>
+                <option value="male" {% if request.args.get('gender') == 'male' %}selected{% endif %}>Мужской</option>
+                <option value="female" {% if request.args.get('gender') == 'female' %}selected{% endif %}>Женский</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <input type="number" step="0.01" name="min_height" class="form-control" placeholder="Мин. рост" value="{{ request.args.get('min_height', '') }}">
+        </div>
+        <div class="col-md-2">
+            <input type="number" step="0.01" name="max_height" class="form-control" placeholder="Макс. рост" value="{{ request.args.get('max_height', '') }}">
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Искать</button>
+        </div>
+    </div>
+</form>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Email</th>
+            <th>Пол</th>
+            <th>Рост</th>
+            <th>Вес</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.gender }}</td>
+            <td>{{ user.height }}</td>
+            <td>{{ user.weight }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
